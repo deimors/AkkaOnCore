@@ -5,7 +5,7 @@ using Akka.Actor;
 using AkkaOnCore.Actors;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AkkaOnCore.Controllers
+namespace AkkaOnCore.API.Meetings
 {
 	[Route("api/[controller]")]
 	[ApiController]

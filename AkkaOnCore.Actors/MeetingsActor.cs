@@ -32,19 +32,4 @@ namespace AkkaOnCore.Actors
 			Sender.Tell(_meetings.ToList());
 		}
 	}
-
-	public class StartMeetingCommand
-	{
-		public string Name { get; private set; }
-
-		public StartMeetingCommand(string name)
-		{
-			Name = name;
-		}
-	}
-
-	public class GetMeetingsQuery
-	{
-
-	}
 }

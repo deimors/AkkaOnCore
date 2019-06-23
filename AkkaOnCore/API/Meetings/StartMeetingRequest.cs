@@ -1,4 +1,4 @@
-﻿namespace AkkaOnCore.Controllers
+﻿namespace AkkaOnCore.API.Meetings
 {
 	public class StartMeetingRequest
 	{
