@@ -1,0 +1,11 @@
+@host = https://localhost:44331/
+
+### Get Meetings
+GET {{host}}/api/meetings
+
+### Start Meeting
+POST {{host}}/api/meetings
+Content-Type: application/json
+{
+    "name": "Test Meeting"
+}
