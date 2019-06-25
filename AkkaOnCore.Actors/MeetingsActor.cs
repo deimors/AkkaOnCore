@@ -2,17 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using Akka.Actor;
+using Akka.Persistence;
 
 namespace AkkaOnCore.Actors
 {
-	public class MeetingsActor : ReceiveActor
+	public class MeetingsActor : ReceivePersistentActor
 	{
 		private readonly IDictionary<Guid, string> _meetings = new Dictionary<Guid, string>();
 
+		public override string PersistenceId => "MeetingsActor";
+
 		public MeetingsActor()
 		{
-			Receive<StartMeetingCommand>(StartMeeting);
-			Receive<GetMeetingsQuery>(GetMeetings);
+			Recover<StartMeetingCommand>(StartMeeting);
+			Command<StartMeetingCommand>(command => Persist(command, StartMeeting));
+
+			Command<GetMeetingsQuery>(GetMeetings);
 		}
 
 		public static Props CreateProps()

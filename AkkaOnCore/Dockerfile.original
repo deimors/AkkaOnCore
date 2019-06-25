@@ -6,7 +6,6 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/core/sdk:2.1-stretch AS build
 WORKDIR /src
 COPY ["AkkaOnCore/AkkaOnCore.csproj", "AkkaOnCore/"]
-COPY ["AkkaOnCore.Actors/AkkaOnCore.Actors.csproj", "AkkaOnCore.Actors/"]
 RUN dotnet restore "AkkaOnCore/AkkaOnCore.csproj"
 COPY . .
 WORKDIR "/src/AkkaOnCore"

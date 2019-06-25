@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Akka.Actor;
@@ -39,7 +40,7 @@ namespace AkkaOnCore
 
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-			services.AddSingleton(_ => ActorSystem.Create("meetings", Config.Empty));
+			services.AddSingleton(_ => ActorSystem.Create("meetings", LoadAkkaConfig("akka.conf")));
 
 			services.AddSingleton<MeetingsActorRefFactory>(serviceProvider =>
 			{
@@ -48,6 +49,11 @@ namespace AkkaOnCore
 				return () => actorRef;
 			});
 		}
+
+		public static Config LoadAkkaConfig(string filename)
+			=> File.Exists(filename) 
+				? ConfigurationFactory.ParseString(File.ReadAllText(filename)) 
+				: Config.Empty;
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime lifetime)

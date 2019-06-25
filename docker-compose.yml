@@ -1,0 +1,16 @@
+version: '3.4'
+
+services:
+  akkaoncore:
+    image: ${DOCKER_REGISTRY-}akkaoncore
+    build:
+      context: .
+      dockerfile: AkkaOnCore/Dockerfile
+    ports:
+      - "44331:443"
+
+  eventstore-node:
+    image: eventstore/eventstore
+    ports:
+      - "2113:2113"
+      - "1113:1113"
