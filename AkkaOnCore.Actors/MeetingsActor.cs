@@ -13,9 +13,9 @@ namespace AkkaOnCore.Actors
 
 		public MeetingsActor()
 		{
-			Recover<MeetingsEvent>(_meetings.HandleMeetingsEvent);
+			Recover<MeetingsEvent>(_meetings.ApplyEvent);
 
-			Command<StartMeetingCommand>(command => PersistAll(_meetings.StartMeeting(command), _meetings.HandleMeetingsEvent));
+			Command<MeetingsCommand>(command => PersistAll(_meetings.HandleCommand(command), _meetings.ApplyEvent));
 		}
 
 		public static Props CreateProps()

@@ -22,7 +22,7 @@ namespace AkkaOnCore.API.Meetings
 		[HttpPost]
 		public IActionResult Start([FromBody]StartMeetingRequest request)
 		{
-			_meetingsActorRef.Tell(new StartMeetingCommand(request.Name));
+			_meetingsActorRef.Tell(new MeetingsCommand.StartMeeting(request.Name));
 
 			return Ok();
 		}

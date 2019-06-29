@@ -9,12 +9,15 @@ namespace AkkaOnCore.Domain
 	{
 		private readonly IDictionary<Guid, string> _meetings = new Dictionary<Guid, string>();
 
-		public IEnumerable<MeetingsEvent> StartMeeting(StartMeetingCommand command)
+		public IEnumerable<MeetingsEvent> HandleCommand(MeetingsCommand command)
+			=> command.Match(StartMeeting);
+
+		private IEnumerable<MeetingsEvent> StartMeeting(MeetingsCommand.StartMeeting command)
 		{
 			yield return new MeetingsEvent.MeetingStartedEvent(Guid.NewGuid(), command.Name);
 		}
 
-		public void HandleMeetingsEvent(MeetingsEvent meetingsEvent)
+		public void ApplyEvent(MeetingsEvent meetingsEvent)
 			=> meetingsEvent.Apply(OnMeetingStarted);
 
 		private void OnMeetingStarted(MeetingsEvent.MeetingStartedEvent e)

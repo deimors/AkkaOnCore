@@ -4,9 +4,6 @@
 ### Home
 GET {{host}}
 
-### Get Meetings
-GET {{host}}/api/meetings
-
 ### Start Meeting
 POST {{host}}/api/meetings
 Content-Type: application/json
