@@ -19,20 +19,12 @@ namespace AkkaOnCore.API.Meetings
 			_meetingsActorRef = meetingsRefFactory();
 		}
 
-		[HttpGet]
-		public async Task<IActionResult> GetAll()
-		{
-			var result = await _meetingsActorRef.Ask<List<KeyValuePair<Guid, string>>>(new GetMeetingsQuery());
-
-			return Ok(result);
-		}
-
 		[HttpPost]
-		public async Task<IActionResult> Start([FromBody]StartMeetingRequest request)
+		public IActionResult Start([FromBody]StartMeetingRequest request)
 		{
-			var result = await _meetingsActorRef.Ask<Guid>(new StartMeetingCommand(request.Name));
+			_meetingsActorRef.Tell(new StartMeetingCommand(request.Name));
 
-			return Ok(result);
+			return Ok();
 		}
 	}
 }
