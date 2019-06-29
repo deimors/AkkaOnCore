@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Akka.Actor;
 using Akka.Persistence;
+using AkkaOnCore.Messages;
 
 namespace AkkaOnCore.Actors
 {

@@ -1,4 +1,8 @@
-@host = https://localhost:44331/
+@host = https://localhost:44331
+@queryhost = https://localhost:44332
+
+### Home
+GET {{host}}
 
 ### Get Meetings
 GET {{host}}/api/meetings
@@ -6,6 +10,10 @@ GET {{host}}/api/meetings
 ### Start Meeting
 POST {{host}}/api/meetings
 Content-Type: application/json
+
 {
-    "name": "Test Meeting"
+    "name": "Another Meeting"
 }
+
+### Query Meetings List
+GET {{queryhost}}/api/meetings

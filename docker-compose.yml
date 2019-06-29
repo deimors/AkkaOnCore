@@ -16,3 +16,11 @@ services:
       - "1113:1113"
     volumes:
       - "~/events:/var/lib/eventstore"
+
+  akkaoncore.query:
+    image: ${DOCKER_REGISTRY-}akkaoncore.query
+    build:
+      context: .
+      dockerfile: AkkaOnCore.QueryAPI/Dockerfile
+    ports:
+      - "44332:443"

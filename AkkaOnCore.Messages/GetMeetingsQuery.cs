@@ -1,4 +1,4 @@
-﻿namespace AkkaOnCore.Actors
+﻿namespace AkkaOnCore.Messages
 {
 	public class GetMeetingsQuery
 	{
