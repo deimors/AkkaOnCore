@@ -15,8 +15,9 @@ namespace AkkaOnCore.Actors
 
 		public MeetingsActor()
 		{
-			Recover<StartMeetingCommand>(StartMeeting);
-			Command<StartMeetingCommand>(command => Persist(command, StartMeeting));
+			Recover<MeetingsEvent>(HandleMeetingsEvent);
+
+			Command<StartMeetingCommand>(command => PersistAll(StartMeeting(command), HandleMeetingsEvent));
 
 			Command<GetMeetingsQuery>(GetMeetings);
 		}
@@ -24,13 +25,24 @@ namespace AkkaOnCore.Actors
 		public static Props CreateProps()
 			=> Props.Create(() => new MeetingsActor());
 
-		private void StartMeeting(StartMeetingCommand command)
+		private IEnumerable<MeetingsEvent> StartMeeting(StartMeetingCommand command)
+			=> Enumerable.Empty<MeetingsEvent>().Append(new MeetingStartedEvent(Guid.NewGuid(), command.Name));
+
+		private void HandleMeetingsEvent(MeetingsEvent meetingsEvent)
 		{
-			var newMeetingId = Guid.NewGuid();
+			switch (meetingsEvent)
+			{
+				case MeetingStartedEvent meetingStarted:
+					OnMeetingStarted(meetingStarted);
+					break;
+			}
+		}
 
-			_meetings.Add(newMeetingId, command.Name);
+		private void OnMeetingStarted(MeetingStartedEvent e)
+		{
+			_meetings.Add(e.MeetingId, e.Name);
 
-			Sender.Tell(newMeetingId);
+			Sender.Tell(e.MeetingId);
 		}
 
 		private void GetMeetings(GetMeetingsQuery obj)

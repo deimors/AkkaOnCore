@@ -26,8 +26,8 @@ namespace AkkaOnCore.QueryAPI.Meetings
 			{
 				switch (envelope.Event)
 				{
-					case StartMeetingCommand startMeeting: 
-						_meetings.Add(new MeetingListEntry { Name = startMeeting.Name });
+					case MeetingStartedEvent meetingStarted: 
+						_meetings.Add(new MeetingListEntry { Name = meetingStarted.Name, Id = meetingStarted.MeetingId });
 						break;
 				}
 			}, materializer);
