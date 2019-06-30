@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Akka.Actor;
 using AkkaOnCore.Actors;
+using AkkaOnCore.Domain;
 using AkkaOnCore.Messages;
+using Functional;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AkkaOnCore.API.Meetings
@@ -20,11 +22,8 @@ namespace AkkaOnCore.API.Meetings
 		}
 
 		[HttpPost]
-		public IActionResult Start([FromBody]StartMeetingRequest request)
-		{
-			_meetingsActorRef.Tell(new MeetingsCommand.StartMeeting(request.Name));
-
-			return Ok();
-		}
+		public async Task<IActionResult> Start([FromBody]StartMeetingRequest request)
+			=> (await _meetingsActorRef.Ask<Result<Unit, MeetingsCommandError>>(new MeetingsCommand.StartMeeting(request.Name)))
+				.Match(_ => Ok() as IActionResult, error => BadRequest(error.Message));
 	}
 }

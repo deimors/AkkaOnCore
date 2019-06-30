@@ -2,6 +2,7 @@
 using Akka.Persistence;
 using AkkaOnCore.Domain;
 using AkkaOnCore.Messages;
+using Functional;
 
 namespace AkkaOnCore.Actors
 {
@@ -15,7 +16,14 @@ namespace AkkaOnCore.Actors
 		{
 			Recover<MeetingsEvent>(_meetings.ApplyEvent);
 
-			Command<MeetingsCommand>(command => PersistAll(_meetings.HandleCommand(command), _meetings.ApplyEvent));
+			Command<MeetingsCommand>(
+				command => Sender.Tell(
+					_meetings
+						.HandleCommand(command)
+						.Do(events => PersistAll(events, _meetings.ApplyEvent))
+						.Select(_ => Unit.Value)
+					)
+				);
 		}
 
 		public static Props CreateProps()

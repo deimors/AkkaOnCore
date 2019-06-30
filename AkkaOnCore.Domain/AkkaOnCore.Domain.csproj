@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Functional.Primitives" Version="1.14.0" />
+    <PackageReference Include="Functional.Primitives.Extensions" Version="1.14.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\AkkaOnCore.Messages\AkkaOnCore.Messages.csproj" />
   </ItemGroup>
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AkkaOnCore.Messages;
+using Functional;
 
 namespace AkkaOnCore.Domain
 {
@@ -9,13 +10,15 @@ namespace AkkaOnCore.Domain
 	{
 		private readonly IDictionary<Guid, string> _meetings = new Dictionary<Guid, string>();
 
-		public IEnumerable<MeetingsEvent> HandleCommand(MeetingsCommand command)
+		public Result<IEnumerable<MeetingsEvent>, MeetingsCommandError> HandleCommand(MeetingsCommand command)
 			=> command.Match(StartMeeting);
 
-		private IEnumerable<MeetingsEvent> StartMeeting(MeetingsCommand.StartMeeting command)
-		{
-			yield return new MeetingsEvent.MeetingStartedEvent(Guid.NewGuid(), command.Name);
-		}
+		private Result<IEnumerable<MeetingsEvent>, MeetingsCommandError> StartMeeting(MeetingsCommand.StartMeeting command)
+			=> Result.Create(
+				!_meetings.Values.Contains(command.Name), 
+				() => new MeetingsEvent[] { new MeetingsEvent.MeetingStartedEvent(Guid.NewGuid(), command.Name) }.AsEnumerable(),
+				() => new MeetingsCommandError($"Meeting with name '{command.Name}' already exists")
+			);
 
 		public void ApplyEvent(MeetingsEvent meetingsEvent)
 			=> meetingsEvent.Apply(OnMeetingStarted);
