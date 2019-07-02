@@ -24,3 +24,11 @@ services:
       dockerfile: AkkaOnCore.QueryAPI/Dockerfile
     ports:
       - "44332:443"
+
+  akkaoncore.readhub:
+    image: ${DOCKER_REGISTRY-}akkaoncore.readhub
+    build:
+      context: .
+      dockerfile: AkkaOnCore.ReadHub/Dockerfile
+    ports:
+      - "44333:443"
