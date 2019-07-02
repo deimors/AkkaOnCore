@@ -28,6 +28,14 @@ namespace AkkaOnCore.ReadHub
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
 			services.AddSignalR();
+
+			services.AddCors(options => options.AddPolicy("CorsPolicy", builder =>
+			{
+				builder.AllowAnyMethod()
+					.AllowAnyHeader()
+					.AllowCredentials()
+					.WithOrigins("https://localhost:44331");
+			}));
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,6 +50,7 @@ namespace AkkaOnCore.ReadHub
 				app.UseHsts();
 			}
 
+			app.UseCors("CorsPolicy");
 			app.UseHttpsRedirection();
 			app.UseMvc();
 
