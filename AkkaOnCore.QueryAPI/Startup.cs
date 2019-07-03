@@ -54,7 +54,6 @@ namespace AkkaOnCore.QueryAPI
 				app.UseHsts();
 			}
 
-			app.UseHttpsRedirection();
 			app.UseMvc();
 
 			lifetime.RegisterActorSystem(app);

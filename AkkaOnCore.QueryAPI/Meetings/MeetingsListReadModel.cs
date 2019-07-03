@@ -6,6 +6,7 @@ using Akka.Persistence.EventStore.Query;
 using Akka.Persistence.Query;
 using Akka.Streams;
 using AkkaOnCore.Messages;
+using AkkaOnCore.QueryAPI.Messages;
 
 namespace AkkaOnCore.QueryAPI.Meetings
 {

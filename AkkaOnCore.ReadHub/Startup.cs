@@ -51,7 +51,6 @@ namespace AkkaOnCore.ReadHub
 			}
 
 			app.UseCors("CorsPolicy");
-			app.UseHttpsRedirection();
 			app.UseMvc();
 
 			app.UseSignalR(routes => routes.MapHub<MeetingsHub>("/meetingsHub"));

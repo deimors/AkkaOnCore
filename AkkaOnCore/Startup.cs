@@ -49,6 +49,14 @@ namespace AkkaOnCore
 
 				return () => actorRef;
 			});
+
+			services.AddHttpClient(
+				"query",
+				client =>
+				{
+					client.BaseAddress = new Uri("http://akkaoncore.query:80");
+				}
+			);
 		}
 
 		public static Config LoadAkkaConfig(string filename)
