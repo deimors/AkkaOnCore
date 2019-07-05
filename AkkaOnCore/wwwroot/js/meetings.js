@@ -5,11 +5,9 @@ var connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:4
 //Disable send button until connection is established
 document.getElementById("sendButton").disabled = true;
 
-connection.on("ReceiveMessage", function (user, message) {
-	var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-	var encodedMsg = user + " says " + msg;
+connection.on("OnMeetingAddedToList", function (id, name) {
 	var li = document.createElement("li");
-	li.textContent = encodedMsg;
+	li.textContent = name;
 	document.getElementById("messagesList").appendChild(li);
 });
 

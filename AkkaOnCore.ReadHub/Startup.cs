@@ -29,13 +29,18 @@ namespace AkkaOnCore.ReadHub
 
 			services.AddSignalR();
 
-			services.AddCors(options => options.AddPolicy("CorsPolicy", builder =>
-			{
-				builder.AllowAnyMethod()
-					.AllowAnyHeader()
-					.AllowCredentials()
-					.WithOrigins("https://localhost:44331");
-			}));
+			services.AddCors(
+				options => options.AddPolicy(
+					"CorsPolicy", 
+					builder => builder
+						.AllowAnyMethod()
+						.AllowAnyHeader()
+						.AllowCredentials()
+						.WithOrigins("https://localhost:44331")
+				)
+			);
+
+			services.AddHostedService<MeetingsEventReader>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
