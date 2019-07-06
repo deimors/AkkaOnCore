@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Akka.Actor;
-using AkkaOnCore.Actors;
-using AkkaOnCore.Domain;
 using AkkaOnCore.Messages;
 using Functional;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AkkaOnCore.API.Meetings
+namespace AkkaOnCore.CommandAPI.Controllers
 {
-	[Route("api/[controller]")]
+	[Route("[controller]")]
 	[ApiController]
 	public class MeetingsController : Controller
 	{

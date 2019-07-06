@@ -1,16 +1,21 @@
 @host = https://localhost:44331
 @queryhost = https://localhost:44332
+@signalrhost = https://localhost:44333
+@commandhost = https://localhost:44334
 
 ### Home
 GET {{host}}
 
-### Start Meeting
-POST {{host}}/api/meetings
+### Start Meeting Command
+POST {{commandhost}}/meetings
 Content-Type: application/json
 
 {
-    "name": "Another Meeting"
+    "name": "J Meeting"
 }
 
 ### Query Meetings List
 GET {{queryhost}}/api/meetings
+
+### Test SignalR
+GET {{signalrhost}}

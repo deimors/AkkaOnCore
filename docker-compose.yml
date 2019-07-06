@@ -32,3 +32,11 @@ services:
       dockerfile: AkkaOnCore.ReadHub/Dockerfile
     ports:
       - "44333:443"
+
+  akkaoncore.command:
+    image: ${DOCKER_REGISTRY-}akkaoncore.command
+    build:
+      context: .
+      dockerfile: AkkaOnCore.CommandAPI/Dockerfile
+    ports:
+      - "44334:443"
