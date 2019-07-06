@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29009.5
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AkkaOnCore", "AkkaOnCore\AkkaOnCore.csproj", "{EF097B0F-6A24-4B30-9250-318C7CAF12A2}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AkkaOnCore.Actors", "AkkaOnCore.Actors\AkkaOnCore.Actors.csproj", "{821001BB-3461-43BD-91FD-A46E6FBD3A29}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{3E5ECE59-E961-4343-9370-E8B52283136F}"
@@ -19,9 +17,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AkkaOnCore.Domain", "AkkaOn
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AkkaOnCore.ReadHub", "AkkaOnCore.ReadHub\AkkaOnCore.ReadHub.csproj", "{7D51EB9B-7B9F-4C6A-A246-17D2BF9B68AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AkkaOnCore.QueryAPI.Messages", "AkkaOnCore.QueryAPI.Messages\AkkaOnCore.QueryAPI.Messages.csproj", "{536E3FFC-3075-43E3-AD89-2F696921AB34}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AkkaOnCore.QueryAPI.Messages", "AkkaOnCore.QueryAPI.Messages\AkkaOnCore.QueryAPI.Messages.csproj", "{536E3FFC-3075-43E3-AD89-2F696921AB34}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AkkaOnCore.CommandAPI", "AkkaOnCore.CommandAPI\AkkaOnCore.CommandAPI.csproj", "{F5FC80E9-C7D8-4D99-9855-7591A237968B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AkkaOnCore.CommandAPI", "AkkaOnCore.CommandAPI\AkkaOnCore.CommandAPI.csproj", "{F5FC80E9-C7D8-4D99-9855-7591A237968B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AkkaOnCore.WebAPI", "AkkaOnCore.WebAPI\AkkaOnCore.WebAPI.csproj", "{8E3A1302-6826-44C1-9960-230AD8FD44AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{EF097B0F-6A24-4B30-9250-318C7CAF12A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EF097B0F-6A24-4B30-9250-318C7CAF12A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EF097B0F-6A24-4B30-9250-318C7CAF12A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EF097B0F-6A24-4B30-9250-318C7CAF12A2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{821001BB-3461-43BD-91FD-A46E6FBD3A29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{821001BB-3461-43BD-91FD-A46E6FBD3A29}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{821001BB-3461-43BD-91FD-A46E6FBD3A29}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -69,6 +65,10 @@ Global
 		{F5FC80E9-C7D8-4D99-9855-7591A237968B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5FC80E9-C7D8-4D99-9855-7591A237968B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F5FC80E9-C7D8-4D99-9855-7591A237968B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E3A1302-6826-44C1-9960-230AD8FD44AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E3A1302-6826-44C1-9960-230AD8FD44AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E3A1302-6826-44C1-9960-230AD8FD44AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E3A1302-6826-44C1-9960-230AD8FD44AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

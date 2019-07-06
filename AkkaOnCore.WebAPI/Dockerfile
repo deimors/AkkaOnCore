@@ -5,17 +5,17 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:2.1-stretch AS build
 WORKDIR /src
-COPY ["AkkaOnCore/AkkaOnCore.csproj", "AkkaOnCore/"]
+COPY ["AkkaOnCore.WebAPI/AkkaOnCore.WebAPI.csproj", "AkkaOnCore.WebAPI/"]
 COPY ["AkkaOnCore.Actors/AkkaOnCore.Actors.csproj", "AkkaOnCore.Actors/"]
-RUN dotnet restore "AkkaOnCore/AkkaOnCore.csproj"
+RUN dotnet restore "AkkaOnCore.WebAPI/AkkaOnCore.WebAPI.csproj"
 COPY . .
 WORKDIR "/src/AkkaOnCore"
-RUN dotnet build "AkkaOnCore.csproj" -c Release -o /app
+RUN dotnet build "AkkaOnCore.WebAPI.csproj" -c Release -o /app
 
 FROM build AS publish
-RUN dotnet publish "AkkaOnCore.csproj" -c Release -o /app
+RUN dotnet publish "AkkaOnCore.WebAPI.csproj" -c Release -o /app
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
-ENTRYPOINT ["dotnet", "AkkaOnCore.dll"]
+ENTRYPOINT ["dotnet", "AkkaOnCore.WebAPI.dll"]

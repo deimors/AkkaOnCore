@@ -1,11 +1,11 @@
 version: '3.4'
 
 services:
-  akkaoncore:
-    image: ${DOCKER_REGISTRY-}akkaoncore
+  akkaoncore.web:
+    image: ${DOCKER_REGISTRY-}akkaoncore.web
     build:
       context: .
-      dockerfile: AkkaOnCore/Dockerfile
+      dockerfile: AkkaOnCore.WebAPI/Dockerfile
     ports:
       - "44331:443"
 
