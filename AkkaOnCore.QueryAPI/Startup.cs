@@ -32,6 +32,17 @@ namespace AkkaOnCore.QueryAPI
 		{
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
+			services.AddCors(
+				options => options.AddPolicy(
+					"CorsPolicy",
+					builder => builder
+						.AllowAnyMethod()
+						.AllowAnyHeader()
+						.AllowCredentials()
+						.WithOrigins("https://localhost:44331")
+				)
+			);
+
 			services.AddSingleton(_ => ActorSystem.Create("meetingsquery", LoadAkkaConfig("akka.conf")));
 
 			services.AddSingleton<MeetingsListReadModel>();
@@ -55,6 +66,7 @@ namespace AkkaOnCore.QueryAPI
 			}
 
 			app.UseMvc();
+			app.UseCors("CorsPolicy");
 
 			lifetime.RegisterActorSystem(app);
 		}

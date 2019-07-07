@@ -22,14 +22,6 @@ namespace AkkaOnCore.Controllers
 
 		public async Task<IActionResult> Index()
 		{
-			var client = _clientFactory.CreateClient("query");
-
-			var result = await client.GetAsync("/api/meetings");
-
-			ViewBag.Meetings = result.IsSuccessStatusCode 
-				? JsonConvert.DeserializeObject<IEnumerable<MeetingListEntry>>(await result.Content.ReadAsStringAsync()) 
-				: Enumerable.Empty<MeetingListEntry>();
-
 			return View();
 		}
 
@@ -56,6 +48,18 @@ namespace AkkaOnCore.Controllers
 		public IActionResult Error()
 		{
 			return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+		}
+
+		[HttpGet("meetings")]
+		public async Task<IActionResult> GetMeetingsList()
+		{
+			var client = _clientFactory.CreateClient("query");
+
+			var result = await client.GetAsync("/api/meetings");
+
+			return result.IsSuccessStatusCode
+				? Ok(JsonConvert.DeserializeObject<IEnumerable<MeetingListEntry>>(await result.Content.ReadAsStringAsync())) as IActionResult
+				: new StatusCodeResult((int)result.StatusCode);
 		}
 	}
 }

@@ -1,33 +1,36 @@
 ﻿@page
-<div class="container">
-	<div class="row">&nbsp;</div>
-	<div class="row">
-		<div class="col-6">&nbsp;</div>
-		<div class="col-6">
-			User..........<input type="text" id="userInput" />
-			<br />
-			Message...<input type="text" id="messageInput" />
-			<input type="button" id="sendButton" value="Send Message" />
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-12">
-			<hr />
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-6">&nbsp;</div>
-		<div class="col-6">
-			<ul id="messagesList">
-				@{
-					foreach (var meeting in ViewBag.Meetings)
-					{
-						<li>@meeting.Name</li>
-					}
-				}
-			</ul>
-		</div>
-	</div>
+<div id="meetings">
+	<ul>
+		<li v-for="meeting in meetings">
+			<h3>{{ meeting.name }}</h3>
+		</li>
+	</ul>
 </div>
+
+<script src="~/lib/vue/vue.js"></script>
 <script src="~/lib/signalr/dist/browser/signalr.js"></script>
-<script src="~/js/meetings.js" asp-append-version="true"></script>
+
+<script>
+	var app = new Vue({
+		el: '#meetings',
+		data: {
+			meetings: []
+		},
+		methods: {
+			loadMeetings() {
+				fetch('/meetings')
+					.then(response => response.json())
+					.then(meetings => this.meetings = meetings);
+			}
+		},
+		created() {
+			this.loadMeetings();
+		}
+	});
+
+	var connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:44333/meetingsHub").build();
+
+	connection.on("OnMeetingAddedToList", (id, name) => app.meetings.push({ name: name, id: id }));
+
+	connection.start().catch(err => console.error(err.toString()));
+</script>
