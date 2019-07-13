@@ -35,8 +35,8 @@ namespace AkkaOnCore.ReadHub
 					builder => builder
 						.AllowAnyMethod()
 						.AllowAnyHeader()
+						.WithOrigins("http://localhost:44300")
 						.AllowCredentials()
-						.WithOrigins("https://localhost:44331")
 				)
 			);
 

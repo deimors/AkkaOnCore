@@ -1,13 +1,20 @@
 version: '3.4'
 
 services:
+  ingress:
+    image: ${DOCKER_REGISTRY-}akkaoncore.ingress
+    build:
+      context: ./Ingress/
+      dockerfile: Dockerfile
+    ports:
+      - 8000:80
+      - 44300:443
+
   akkaoncore.web:
     image: ${DOCKER_REGISTRY-}akkaoncore.web
     build:
       context: .
       dockerfile: AkkaOnCore.WebAPI/Dockerfile
-    ports:
-      - "44331:443"
 
   eventstore-node:
     image: eventstore/eventstore
@@ -22,8 +29,6 @@ services:
     build:
       context: .
       dockerfile: AkkaOnCore.QueryAPI/Dockerfile
-    ports:
-      - "44332:443"
 
   akkaoncore.readhub:
     image: ${DOCKER_REGISTRY-}akkaoncore.readhub
@@ -38,5 +43,3 @@ services:
     build:
       context: .
       dockerfile: AkkaOnCore.CommandAPI/Dockerfile
-    ports:
-      - "44334:443"

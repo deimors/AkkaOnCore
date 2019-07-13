@@ -5,6 +5,11 @@
 			<h3>{{ meeting.name }}</h3>
 		</li>
 	</ul>
+	<div>
+		<input type="text" v-model="newMeetingName" placeholder="New Meeting Name"/>
+		
+		<button v-on:click="startMeeting">Start</button>
+	</div>
 </div>
 
 <script src="~/lib/vue/vue.js"></script>
@@ -14,13 +19,24 @@
 	var app = new Vue({
 		el: '#meetings',
 		data: {
+			newMeetingName: "",
 			meetings: []
 		},
 		methods: {
 			loadMeetings() {
-				fetch('/meetings')
+				fetch('/api/meetings')
 					.then(response => response.json())
 					.then(meetings => this.meetings = meetings);
+			},
+			startMeeting() {
+				fetch(
+					'/api/meetings',
+					{
+						method: 'POST',
+						headers: { 'Accept': '*/*', 'Content-Type': 'application/json' },
+						body: JSON.stringify({ name: this.newMeetingName })
+					}
+				);
 			}
 		},
 		created() {

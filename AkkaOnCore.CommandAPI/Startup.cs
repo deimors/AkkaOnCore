@@ -53,7 +53,6 @@ namespace AkkaOnCore.CommandAPI
 				app.UseHsts();
 			}
 
-			app.UseHttpsRedirection();
 			app.UseMvc();
 
 			lifetime.RegisterActorSystem(app);

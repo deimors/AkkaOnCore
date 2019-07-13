@@ -2,7 +2,7 @@
 
 namespace AkkaOnCore.QueryAPI.Meetings
 {
-	[Route("api/[controller]")]
+	[Route("[controller]")]
     [ApiController]
     public class MeetingsController : ControllerBase
     {

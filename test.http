@@ -1,24 +1,21 @@
-@webhost = https://localhost:44331
-@queryhost = https://localhost:44332
+@webhost = http://localhost:44300
+@queryhost = http://localhost:44300/api
+@commandhost = http://localhost:44300/api
 @signalrhost = https://localhost:44333
-@commandhost = https://localhost:44334
 
 ### Home
 GET {{webhost}}
-
-### Webhost Meetings
-GET {{webhost}}/meetings
 
 ### Start Meeting Command
 POST {{commandhost}}/meetings
 Content-Type: application/json
 
 {
-    "name": "C Meeting"
+    "name": "D Meeting"
 }
 
 ### Query Meetings List
-GET {{queryhost}}/api/meetings
+GET {{queryhost}}/meetings
 
 ### Test SignalR
 GET {{signalrhost}}

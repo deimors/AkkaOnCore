@@ -37,14 +37,6 @@ namespace AkkaOnCore
 			});
 
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
-			services.AddHttpClient(
-				"query",
-				client =>
-				{
-					client.BaseAddress = new Uri("http://akkaoncore.query:80");
-				}
-			);
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -60,9 +52,7 @@ namespace AkkaOnCore
 				app.UseHsts();
 			}
 
-			app.UseHttpsRedirection();
 			app.UseStaticFiles();
-			app.UseCookiePolicy();
 
 			app.UseMvc(routes =>
 			{
