@@ -9,7 +9,7 @@ COPY ["AkkaOnCore.WebAPI/AkkaOnCore.WebAPI.csproj", "AkkaOnCore.WebAPI/"]
 COPY ["AkkaOnCore.Actors/AkkaOnCore.Actors.csproj", "AkkaOnCore.Actors/"]
 RUN dotnet restore "AkkaOnCore.WebAPI/AkkaOnCore.WebAPI.csproj"
 COPY . .
-WORKDIR "/src/AkkaOnCore"
+WORKDIR "/src/AkkaOnCore.WebAPI"
 RUN dotnet build "AkkaOnCore.WebAPI.csproj" -c Release -o /app
 
 FROM build AS publish

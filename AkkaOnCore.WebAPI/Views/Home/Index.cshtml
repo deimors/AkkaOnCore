@@ -44,7 +44,7 @@
 		}
 	});
 
-	var connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:44333/meetingsHub").build();
+	var connection = new signalR.HubConnectionBuilder().withUrl("/signalr/meetingsHub").build();
 
 	connection.on("OnMeetingAddedToList", (id, name) => app.meetings.push({ name: name, id: id }));
 
