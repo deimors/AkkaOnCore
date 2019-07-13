@@ -1,6 +1,4 @@
-using System;
-
-namespace AkkaOnCore.Models
+namespace AkkaOnCore.WebAPI.Models
 {
 	public class ErrorViewModel
 	{

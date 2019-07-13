@@ -1,6 +1,6 @@
-﻿using AkkaOnCore.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using AkkaOnCore.WebAPI.Models;
 
 namespace AkkaOnCore.WebAPI.Controllers
 {
