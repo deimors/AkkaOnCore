@@ -27,4 +27,10 @@
     <ProjectReference Include="..\AkkaOnCore.Messages\AkkaOnCore.Messages.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="akka.conf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

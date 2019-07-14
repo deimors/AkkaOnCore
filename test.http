@@ -11,7 +11,7 @@ POST {{commandhost}}/meetings
 Content-Type: application/json
 
 {
-    "name": "D Meeting"
+    "name": "A Meeting"
 }
 
 ### Query Meetings List
