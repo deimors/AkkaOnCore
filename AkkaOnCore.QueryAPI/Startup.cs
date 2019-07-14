@@ -46,6 +46,8 @@ namespace AkkaOnCore.QueryAPI
 			services.AddSingleton(_ => ActorSystem.Create("meetingsquery", LoadAkkaConfig("akka.conf")));
 
 			services.AddSingleton<MeetingsListReadModel>();
+
+			services.AddHostedService<UpdateMeetingsListService>();
 		}
 
 		public static Config LoadAkkaConfig(string filename)
