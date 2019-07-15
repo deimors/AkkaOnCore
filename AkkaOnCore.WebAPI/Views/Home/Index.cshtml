@@ -1,16 +1,17 @@
 ﻿@page
-<div id="meetings">
-	<ul>
-		<li v-for="meeting in meetings">
-			<h3>{{ meeting.name }}</h3>
-		</li>
-	</ul>
-	<div>
-		<input type="text" v-model="newMeetingName" placeholder="New Meeting Name"/>
-		
-		<button v-on:click="startMeeting">Start</button>
+	<div id="meetings">
+		<ul>
+			<li v-for="meeting in meetings">
+				<h3>{{ meeting.name }}</h3>
+			</li>
+		</ul>
+		<div v-if="disconnected" style="color: red; font-weight: bold">Disconnected</div>
+		<div>
+			<input type="text" v-model="newMeetingName" placeholder="New Meeting Name" />
+
+			<button v-on:click="startMeeting">Start</button>
+		</div>
 	</div>
-</div>
 
 <script src="~/lib/vue/vue.js"></script>
 <script src="~/lib/signalr/dist/browser/signalr.js"></script>
@@ -20,7 +21,8 @@
 		el: '#meetings',
 		data: {
 			newMeetingName: "",
-			meetings: []
+			meetings: [],
+			disconnected: true
 		},
 		methods: {
 			loadMeetings() {
@@ -48,5 +50,24 @@
 
 	connection.on("OnMeetingAddedToList", (id, name) => app.meetings.push({ name: name, id: id }));
 
-	connection.start().catch(err => console.error(err.toString()));
+	function start() {
+		connection
+			.start()
+			.then(() => {
+				console.info("Connected");
+				app.disconnected = false;
+			})
+			.catch(err => {
+				console.error(err.toString());
+				setTimeout(() => start(), 5000);
+			});
+	}
+
+	connection.onclose(() => {
+		console.info("Disconnected, retrying...");
+		app.disconnected = true;
+		start();
+	});
+
+	start();
 </script>
