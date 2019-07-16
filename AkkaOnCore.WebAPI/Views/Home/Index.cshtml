@@ -5,9 +5,9 @@
 				<h3>{{ meeting.name }}</h3>
 			</li>
 		</ul>
-		<div v-if="disconnected" style="color: red; font-weight: bold">Disconnected</div>
+		<div v-if="disconnected" style="color: black; background-color: red; font-weight: bold; padding: 5px">Disconnected</div>
 		<div>
-			<input type="text" v-model="newMeetingName" placeholder="New Meeting Name" />
+			<input type="text" v-model="newMeetingName" placeholder="Meeting Name" />
 
 			<button v-on:click="startMeeting">Start</button>
 		</div>
@@ -59,7 +59,7 @@
 			})
 			.catch(err => {
 				console.error(err.toString());
-				setTimeout(() => start(), 5000);
+				setTimeout(() => start(), 1000);
 			});
 	}
 
