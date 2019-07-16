@@ -17,11 +17,11 @@ namespace AkkaOnCore.Domain
 			MeetingsCommand.StartMeeting command)
 			=> Result.Unit<MeetingsCommandError>()
 				.FailIf(
-					_meetings.Values.Contains(command.Name),
-					() => new MeetingsCommandError($"Meeting with name '{command.Name}' already exists")
-				).FailIf(
 					string.IsNullOrWhiteSpace(command.Name),
 					() => new MeetingsCommandError("Meeting Name cannot be Empty or Whitespace")
+				).FailIf(
+					_meetings.Values.Contains(command.Name),
+					() => new MeetingsCommandError($"Meeting with name '{command.Name}' already exists")
 				).Select(_ => new MeetingsEvent[]
 					{
 						new MeetingsEvent.MeetingStartedEvent(Guid.NewGuid(), command.Name)
