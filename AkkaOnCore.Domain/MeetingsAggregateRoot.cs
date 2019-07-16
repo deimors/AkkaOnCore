@@ -13,8 +13,7 @@ namespace AkkaOnCore.Domain
 		public Result<IEnumerable<MeetingsEvent>, MeetingsCommandError> HandleCommand(MeetingsCommand command)
 			=> command.Match(StartMeeting);
 
-		private Result<IEnumerable<MeetingsEvent>, MeetingsCommandError> StartMeeting(
-			MeetingsCommand.StartMeeting command)
+		private Result<IEnumerable<MeetingsEvent>, MeetingsCommandError> StartMeeting(MeetingsCommand.StartMeeting command)
 			=> Result.Unit<MeetingsCommandError>()
 				.FailIf(
 					string.IsNullOrWhiteSpace(command.Name),
@@ -22,11 +21,8 @@ namespace AkkaOnCore.Domain
 				).FailIf(
 					_meetings.Values.Contains(command.Name),
 					() => new MeetingsCommandError($"Meeting with name '{command.Name}' already exists")
-				).Select(_ => new MeetingsEvent[]
-					{
-						new MeetingsEvent.MeetingStartedEvent(Guid.NewGuid(), command.Name)
-					}
-					.AsEnumerable()
+				).BuildSequence(
+					new MeetingsEvent.MeetingStartedEvent(Guid.NewGuid(), command.Name) as MeetingsEvent
 				);
 				
 		public void ApplyEvent(MeetingsEvent meetingsEvent)
@@ -40,5 +36,8 @@ namespace AkkaOnCore.Domain
 	{
 		public static Result<TSuccess, TFailure> FailIf<TSuccess, TFailure>(this Result<TSuccess, TFailure> source, bool condition, Func<TFailure> failureFactory)
 			=> source.Bind(success => Result.Create(!condition, success, failureFactory()));
+
+		public static Result<IEnumerable<TOut>, TFailure> BuildSequence<TIn, TOut, TFailure>(this Result<TIn, TFailure> source, params TOut[] events)
+			=> source.Select(_ => events.AsEnumerable());
 	}
 }
