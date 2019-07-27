@@ -30,7 +30,7 @@ namespace AkkaOnCore.CommandAPI
 
 			services.AddSingleton<MeetingsActorRefFactory>(serviceProvider =>
 			{
-				var actorRef = serviceProvider.GetService<ActorSystem>().ActorOf(MeetingsActor.CreateProps());
+				var actorRef = serviceProvider.GetService<ActorSystem>().ActorOf(MeetingsActor.CreateProps(), "Meetings");
 
 				return () => actorRef;
 			});
