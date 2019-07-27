@@ -1,13 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using Akka.Actor;
-using Akka.Persistence;
 using AkkaOnCore.Domain;
 using AkkaOnCore.Messages;
 using Functional;
 
 namespace AkkaOnCore.Actors
 {
-	public class MeetingsActor : ReceivePersistentActor
+	public class MeetingsActor : AggregateRootActor<MeetingsEvent, MeetingsCommand, MeetingsCommandError>
 	{
 		private readonly MeetingsAggregateRoot _meetings = new MeetingsAggregateRoot();
 
@@ -15,25 +15,16 @@ namespace AkkaOnCore.Actors
 
 		public MeetingsActor()
 		{
-			Console.WriteLine("Creating Meetings Actor");
-
-			Recover<MeetingsEvent>(ApplyEvent);
-
-			Command<MeetingsCommand>(HandleCommand);
+			Console.WriteLine("Created Meetings Actor");
 		}
 
 		public static Props CreateProps()
 			=> Props.Create(() => new MeetingsActor());
 
-		private void HandleCommand(MeetingsCommand command)
-			=> Sender.Tell(
-				_meetings
-					.HandleCommand(command)
-					.Do(events => PersistAll(events, ApplyEvent))
-					.Select(_ => Unit.Value)
-			);
+		protected override Result<IEnumerable<MeetingsEvent>, MeetingsCommandError> HandleCommand(MeetingsCommand command)
+			=> _meetings.HandleCommand(command);
 
-		private void ApplyEvent(MeetingsEvent @event)
+		protected override void ApplyEvent(MeetingsEvent @event)
 		{
 			_meetings.ApplyEvent(@event);
 
