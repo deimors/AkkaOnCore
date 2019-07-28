@@ -1,21 +1,15 @@
-﻿using System;
-using Akka.Actor;
-using Akka.Persistence;
+﻿using Akka.Actor;
+using AkkaOnCore.Domain;
+using AkkaOnCore.Messages;
+using System;
 
 namespace AkkaOnCore.Actors
 {
-	public class MeetingActor : ReceivePersistentActor
+	public class MeetingActor : AggregateRootActor<MeetingEvent, MeetingCommand, MeetingCommandError>
 	{
-		private readonly Guid _id;
-		private readonly string _name;
-		public override string PersistenceId { get; }
-
-		public MeetingActor(Guid id, string name)
+		public MeetingActor(Guid id, string name) : base(new MeetingAggregateRoot(id, name), $"Meeting-{id}")
 		{
-			_id = id;
-			_name = name;
-
-			PersistenceId = $"Meeting-{id}";
+			Console.WriteLine($"Created '{name}' ({PersistenceId})");
 		}
 
 		public static Props CreateProps(Guid id, string name)

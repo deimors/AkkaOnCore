@@ -6,8 +6,8 @@ namespace AkkaOnCore.Messages
 	{
 		public class MeetingStartedEvent : MeetingsEvent
 		{
-			public Guid MeetingId { get; private set; }
-			public string Name { get; private set; }
+			public Guid MeetingId { get; }
+			public string Name { get; }
 
 			public MeetingStartedEvent(Guid meetingId, string name)
 			{
