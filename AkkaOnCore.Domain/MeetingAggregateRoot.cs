@@ -11,6 +11,8 @@ namespace AkkaOnCore.Domain
 		private readonly Guid _meetingId;
 		private readonly string _name;
 
+		private readonly IDictionary<Guid, string> _agendaItems = new Dictionary<Guid, string>();
+
 		public MeetingAggregateRoot(Guid meetingId, string name)
 		{
 			_meetingId = meetingId;
@@ -18,9 +20,16 @@ namespace AkkaOnCore.Domain
 		}
 
 		public Result<IEnumerable<MeetingEvent>, MeetingCommandError> HandleCommand(MeetingCommand command)
-			=> Result.Success<IEnumerable<MeetingEvent>, MeetingCommandError>(Enumerable.Empty<MeetingEvent>());
+			=> command.Match(AddToAgenda);
+
+		private Result<IEnumerable<MeetingEvent>, MeetingCommandError> AddToAgenda(MeetingCommand.AddToAgenda command)
+			=> Result.Unit<MeetingCommandError>()
+				.BuildSequence((MeetingEvent)new MeetingEvent.ItemAddedToAgenda(command.Description, _meetingId, Guid.NewGuid()));
 
 		public void ApplyEvent(MeetingEvent @event)
-			=> @event.Apply();
+			=> @event.Apply(OnItemAddedToAgenda);
+
+		private void OnItemAddedToAgenda(MeetingEvent.ItemAddedToAgenda @event)
+			=> _agendaItems[@event.AgendaItemId] = @event.Description;
 	}
 }
