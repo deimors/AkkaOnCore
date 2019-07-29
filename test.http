@@ -2,6 +2,7 @@
 @queryhost = http://localhost:44300/api
 @commandhost = http://localhost:44300/api
 @signalrhost = https://localhost:44333
+@meetingid = 28736a43-396f-40c4-a173-bd6b311e9c50
 
 ### Home
 GET {{webhost}}
@@ -11,7 +12,15 @@ POST {{commandhost}}/meetings
 Content-Type: application/json
 
 {
-    "name": "A Meeting"
+    "name": "Blap"
+}
+
+### Add Agenda Item Command
+POST {{commandhost}}/meeting/{{meetingid}}/addtoagenda
+Content-Type: application/json
+
+{
+    "description": "Something"
 }
 
 ### Query Meetings List

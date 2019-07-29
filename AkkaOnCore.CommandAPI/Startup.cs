@@ -1,4 +1,5 @@
-﻿using Akka.Actor;
+﻿using System;
+using Akka.Actor;
 using Akka.Configuration;
 using AkkaOnCore.Actors;
 using AkkaOnCore.APICommon;
@@ -34,6 +35,14 @@ namespace AkkaOnCore.CommandAPI
 
 				return () => actorRef;
 			});
+
+			services.AddSingleton<MeetingActorRefFactory>(
+				serviceProvider => 
+					meetingId => serviceProvider
+						.GetService<ActorSystem>()
+						.ActorSelection($"/user/Meetings/{meetingId}")
+						.ResolveOne(TimeSpan.FromSeconds(5))
+			);
 		}
 
 		public static Config LoadAkkaConfig(string filename)
