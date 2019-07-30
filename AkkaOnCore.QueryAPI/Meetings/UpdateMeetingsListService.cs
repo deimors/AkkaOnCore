@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Akka;
 using Akka.Actor;
 using Akka.Persistence.EventStore.Query;
 using Akka.Persistence.Query;
 using Akka.Streams;
+using Akka.Streams.Dsl;
 using AkkaOnCore.Messages;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -26,21 +28,36 @@ namespace AkkaOnCore.QueryAPI.Meetings
 
 		public Task StartAsync(CancellationToken cancellationToken)
 		{
-			var readJournal = PersistenceQuery.Get(_actorSystem).ReadJournalFor<EventStoreReadJournal>("akka.persistence.query.journal.eventstore");
-
-			var source = readJournal.EventsByPersistenceId("MeetingsActor", 0, long.MaxValue);
-
-			var materializer = ActorMaterializer.Create(_actorSystem);
-
-			source.RunForeach(envelope => ApplyEvent(envelope), materializer);
+			ListenToEvents<MeetingsEvent>("MeetingsActor", ApplyMeetingsEvent);
 
 			return Task.CompletedTask;
 		}
 
-		private void ApplyEvent(EventEnvelope envelope)
+		private void ListenToEvents<TEvent>(string persistenceId, Action<TEvent> applyEvent)
+			=> PersistenceQuery
+				.Get(_actorSystem)
+				.ReadJournalFor<EventStoreReadJournal>("akka.persistence.query.journal.eventstore")
+				.EventsByPersistenceId(persistenceId, 0, long.MaxValue)
+				.RunForeach(envelope =>
+					{
+						_logger.LogInformation($"Received {envelope.PersistenceId} ({envelope.SequenceNr}) :: {envelope.Event}");
+						applyEvent((TEvent)envelope.Event);
+					}, 
+					ActorMaterializer.Create(_actorSystem)
+				);
+
+		private void ApplyMeetingsEvent(MeetingsEvent @event)
 		{
-			_logger.LogInformation($"Received {envelope.SequenceNr} :: {envelope.PersistenceId}");
-			_readModel.Integrate((MeetingsEvent)envelope.Event);
+			_readModel.Integrate(@event);
+
+			@event.Apply(
+				meetingStarted => ListenToEvents<MeetingEvent>($"Meeting-{meetingStarted.MeetingId}", ApplyMeetingEvent)
+			);
+		}
+
+		private void ApplyMeetingEvent(MeetingEvent @event)
+		{
+			_readModel.Integrate(@event);
 		}
 
 		public Task StopAsync(CancellationToken cancellationToken)
