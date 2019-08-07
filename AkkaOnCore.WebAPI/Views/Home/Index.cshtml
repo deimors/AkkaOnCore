@@ -1,8 +1,8 @@
 ﻿@page
 	<div id="meetings">
 		<ul>
-			<li v-for="meeting in meetings">
-				<h3>{{ meeting.name }}</h3>
+			<li v-for="(meeting, id) in meetings">
+				<h3>{{ meeting.name }} ({{ meeting.agendaItemCount }})</h3>
 			</li>
 		</ul>
 		<div v-if="disconnected" style="color: black; background-color: red; font-weight: bold; padding: 5px">Disconnected</div>
@@ -21,14 +21,14 @@
 		el: '#meetings',
 		data: {
 			newMeetingName: "",
-			meetings: [],
+			meetings: {},
 			disconnected: true
 		},
 		methods: {
 			loadMeetings() {
 				fetch('/api/meetings')
 					.then(response => response.json())
-					.then(meetings => this.meetings = meetings);
+					.then(meetings => this.meetings = meetings.reduce((map, meeting) => { map[meeting.id] = meeting; return map;}, {}));
 			},
 			startMeeting() {
 				fetch(
@@ -48,7 +48,8 @@
 
 	var connection = new signalR.HubConnectionBuilder().withUrl("/signalr/meetingsHub").build();
 
-	connection.on("OnMeetingAddedToList", (id, name) => app.meetings.push({ name: name, id: id }));
+	connection.on("OnMeetingAddedToList", (id, name) => Vue.set(app.meetings, id, { name: name, id: id, agendaItemCount: 0 }));
+	connection.on("OnMeetingAgendaCountChanged", (id, newCount) => app.meetings[id].agendaItemCount = newCount);
 
 	function start() {
 		connection
