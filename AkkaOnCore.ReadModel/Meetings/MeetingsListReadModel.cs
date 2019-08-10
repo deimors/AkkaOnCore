@@ -1,9 +1,8 @@
-﻿using AkkaOnCore.Messages;
-using AkkaOnCore.QueryAPI.Messages;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using AkkaOnCore.Messages;
 
-namespace AkkaOnCore.QueryAPI.Meetings
+namespace AkkaOnCore.ReadModel.Meetings
 {
 	public class MeetingsListReadModel
 	{

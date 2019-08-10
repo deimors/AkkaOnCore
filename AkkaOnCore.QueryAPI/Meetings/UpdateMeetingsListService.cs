@@ -8,6 +8,7 @@ using Akka.Persistence.Query;
 using Akka.Streams;
 using Akka.Streams.Dsl;
 using AkkaOnCore.Messages;
+using AkkaOnCore.ReadModel.Meetings;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 

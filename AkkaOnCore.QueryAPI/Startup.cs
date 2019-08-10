@@ -7,6 +7,7 @@ using Akka.Actor;
 using Akka.Configuration;
 using AkkaOnCore.APICommon;
 using AkkaOnCore.QueryAPI.Meetings;
+using AkkaOnCore.ReadModel.Meetings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;

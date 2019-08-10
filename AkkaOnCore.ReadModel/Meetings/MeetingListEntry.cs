@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AkkaOnCore.QueryAPI.Messages
+namespace AkkaOnCore.ReadModel.Meetings
 {
 	public class MeetingListEntry
 	{

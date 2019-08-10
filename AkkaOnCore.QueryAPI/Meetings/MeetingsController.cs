@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AkkaOnCore.ReadModel.Meetings;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AkkaOnCore.QueryAPI.Meetings
 {

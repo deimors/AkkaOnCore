@@ -22,7 +22,7 @@
   <ItemGroup>
     <ProjectReference Include="..\AkkaOnCore.APICommon\AkkaOnCore.APICommon.csproj" />
     <ProjectReference Include="..\AkkaOnCore.Messages\AkkaOnCore.Messages.csproj" />
-    <ProjectReference Include="..\AkkaOnCore.QueryAPI.Messages\AkkaOnCore.QueryAPI.Messages.csproj" />
+    <ProjectReference Include="..\AkkaOnCore.ReadModel\AkkaOnCore.ReadModel.csproj" />
   </ItemGroup>
 
   <ItemGroup>
