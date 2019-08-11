@@ -6,6 +6,6 @@ namespace AkkaOnCore.ReadHub
 	public interface IMeetings
 	{
 		Task OnMeetingAddedToList(string meetingId, string name);
-		Task OnMeetingAgendaCountChanged(string meetingId, int newCount);
+		Task OnMeetingAgendaCountChanged(string meetingId, long newCount);
 	}
 }

@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AkkaOnCore.Messages\AkkaOnCore.Messages.csproj" />
+    <ProjectReference Include="..\AkkaOnCore.ReadModel\AkkaOnCore.ReadModel.csproj" />
   </ItemGroup>
 
 </Project>

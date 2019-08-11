@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AkkaOnCore.Messages;
+using AkkaOnCore.ReadModel.Meetings;
 using EventStore.ClientAPI;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Hosting;
@@ -17,17 +18,16 @@ namespace AkkaOnCore.ReadHub
 		private readonly ILogger<MeetingsEventReader> _logger;
 
 		private bool _isConnected;
-		private readonly IEventStoreConnection _connection;
+		private readonly IEventStoreConnection _connection = EventStoreConnection.Create("ConnectTo=tcp://admin:changeit@eventstore-node:1113; MaxReconnections=-1");
 
 		private readonly List<IProcessEvents> _eventProcessors = new List<IProcessEvents>();
 
-		private readonly Dictionary<Guid, int> _agendaCounts = new Dictionary<Guid, int>();
+		private readonly MeetingsListReadModel _readModel = new MeetingsListReadModel();
 
 		public MeetingsEventReader(IHubContext<MeetingsHub, IMeetings> meetingsHub, ILogger<MeetingsEventReader> logger)
 		{
 			_meetingsHub = meetingsHub;
 			_logger = logger;
-			_connection = EventStoreConnection.Create("ConnectTo=tcp://admin:changeit@eventstore-node:1113; MaxReconnections=-1");
 		}
 
 		protected override async Task ExecuteAsync(CancellationToken cancelToken)
@@ -68,20 +68,27 @@ namespace AkkaOnCore.ReadHub
 				: Enumerable.Empty<ResolvedEvent>();
 
 		private Task HandleMeetingsEvent(MeetingsEvent meetingsEvent)
-			=> meetingsEvent.Match(
-				meetingStarted =>
-				{
-					_eventProcessors.Add(new EventProcessor<MeetingEvent>(new EventReader<MeetingEvent>(this, $"Meeting-{meetingStarted.MeetingId}"), HandleMeetingEvent));
-					return _meetingsHub.Clients.All.OnMeetingAddedToList(meetingStarted.MeetingId.ToString(), meetingStarted.Name);
-				});
+		{
+			if (meetingsEvent is MeetingsEvent.MeetingStartedEvent meetingStarted)
+				_eventProcessors.Add(new EventProcessor<MeetingEvent>(new EventReader<MeetingEvent>(this, $"Meeting-{meetingStarted.MeetingId}"), HandleMeetingEvent));
 
-		private Task HandleMeetingEvent(MeetingEvent @event)
+			return SendReadModelEvents(_readModel.Integrate(meetingsEvent));
+		}
+
+		private Task HandleMeetingEvent(MeetingEvent meetingEvent)
+			=> SendReadModelEvents(_readModel.Integrate(meetingEvent));
+
+		private async Task SendReadModelEvents(IEnumerable<MeetingsListEvent> events)
+		{
+			foreach (var @event in events)
+				await SendReadModelEvent(@event);
+		}
+
+		private Task SendReadModelEvent(MeetingsListEvent @event)
 			=> @event.Match(
-				itemAddedToAgenda => _meetingsHub.Clients.All.OnMeetingAgendaCountChanged(itemAddedToAgenda.MeetingId.ToString(), IncrementAgendaCount(itemAddedToAgenda.MeetingId))
+				meetingAdded => _meetingsHub.Clients.All.OnMeetingAddedToList(meetingAdded.MeetingId, meetingAdded.Name),
+				agendaItemCountChanged => _meetingsHub.Clients.All.OnMeetingAgendaCountChanged(agendaItemCountChanged.MeetingId, agendaItemCountChanged.NewCount)
 			);
-
-		private int IncrementAgendaCount(Guid meetingId)
-			=> _agendaCounts[meetingId] = _agendaCounts.ContainsKey(meetingId) ? _agendaCounts[meetingId] + 1 : 1;
 
 		private void OnErrorOccurred(object sender, ClientErrorEventArgs e)
 		{
