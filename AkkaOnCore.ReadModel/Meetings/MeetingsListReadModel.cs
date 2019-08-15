@@ -84,9 +84,9 @@ namespace AkkaOnCore.ReadModel.Meetings
 
 		private IEnumerable<MeetingsListEvent> IncrementAgendaItemCount(Guid meetingId)
 		{
-			var newCount = _meetings[meetingId].AgendaItemCount++;
+			_meetings[meetingId].AgendaItemCount++;
 
-			return new MeetingsListEvent[] { new MeetingsListEvent.AgendaItemCountChanged(meetingId.ToString(), newCount) };
+			return new MeetingsListEvent[] { new MeetingsListEvent.AgendaItemCountChanged(meetingId.ToString(), _meetings[meetingId].AgendaItemCount) };
 		}
 	}
 }
