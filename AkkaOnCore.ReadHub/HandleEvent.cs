@@ -1,6 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AkkaOnCore.ReadHub
 {
-	public delegate Task HandleEvent<TEvent>(TEvent @event);
+	public delegate IEnumerable<TReadModelEvent> HandleEvent<TEvent, TReadModelEvent>(TEvent @event);
 }

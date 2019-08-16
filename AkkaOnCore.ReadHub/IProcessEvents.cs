@@ -1,9 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AkkaOnCore.ReadHub
 {
-	public interface IProcessEvents
+	public interface IProcessEvents<TReadModelEvents>
 	{
-		Task Process();
+		Task<IEnumerable<TReadModelEvents>> Process();
 	}
 }

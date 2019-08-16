@@ -42,7 +42,7 @@ namespace AkkaOnCore.ReadHub
 
 			services
 				.AddSingleton<IEventStorage, EventStoreStorage>()
-				.AddHostedService<MeetingsEventReader>();
+				.AddHostedService<MeetingsListUpdateService>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
