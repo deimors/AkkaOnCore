@@ -9,6 +9,12 @@
 			<h3>{{ agendaItem }}</h3>
 		</li>
 	</ul>
+	
+	<div>
+		<input type="text" v-model="newAgendaItem" placeholder="Agenda Item" />
+
+		<button v-on:click="addAgendaItem">Add</button>
+	</div>
 </div>
 
 <script src="~/lib/vue/vue.js"></script>
@@ -18,6 +24,7 @@
 	var app = new Vue({
 		el: '#meeting',
 		data: {
+			newAgendaItem: "",
 			model: {
 				name: "",
 				agenda: []
@@ -28,6 +35,16 @@
 				fetch('/api/meeting/@meetingId')
 					.then(response => response.json())
 					.then(model => this.model = model);
+			},
+			addAgendaItem() {
+				fetch(
+					'/api/meeting/@meetingId/addtoagenda',
+					{
+						method: 'POST',
+						headers: { 'Accept': '*/*', 'Content-Type': 'application/json' },
+						body: JSON.stringify({ description: this.newAgendaItem })
+					}
+				);
 			}
 		},
 		created() {
