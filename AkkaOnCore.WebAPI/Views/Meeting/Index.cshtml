@@ -1,0 +1,37 @@
+﻿@page
+@{
+	var meetingId = (Guid) ViewBag.MeetingId;
+}
+<div id="meeting">
+	<h1>{{model.name}}</h1>
+	<ul>
+		<li v-for="agendaItem in model.agenda">
+			<h3>{{ agendaItem }}</h3>
+		</li>
+	</ul>
+</div>
+
+<script src="~/lib/vue/vue.js"></script>
+<script src="~/lib/signalr/dist/browser/signalr.js"></script>
+
+<script>
+	var app = new Vue({
+		el: '#meeting',
+		data: {
+			model: {
+				name: "",
+				agenda: []
+			}
+		},
+		methods: {
+			loadModel() {
+				fetch('/api/meeting/@meetingId')
+					.then(response => response.json())
+					.then(model => this.model = model);
+			}
+		},
+		created() {
+			this.loadModel();
+		}
+	});
+</script>
