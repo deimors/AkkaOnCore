@@ -2,7 +2,7 @@
 @queryhost = http://localhost:44300/api
 @commandhost = http://localhost:44300/api
 @signalrhost = https://localhost:44333
-@meetingid = a8ca076b-630f-48d3-b265-460c0478a402
+@meetingid = e71aed95-3d04-452d-89ae-d2c3997a4ba6
 
 ### Home
 GET {{webhost}}
@@ -25,6 +25,9 @@ Content-Type: application/json
 
 ### Query Meetings List
 GET {{queryhost}}/meetings
+
+### Query Meeting
+GET {{queryhost}}/meeting/{{meetingid}}
 
 ### Test SignalR
 GET {{signalrhost}}

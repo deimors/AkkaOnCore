@@ -24,7 +24,7 @@ namespace AkkaOnCore.ReadHub
 
 		protected override void Initialize()
 		{
-			AddStreamHandler<MeetingsEvent>("MeetingsActor", HandleMeetingsEvent);
+			AddProcessor<MeetingsEvent>("MeetingsActor", HandleMeetingsEvent);
 		}
 
 		private IEnumerable<MeetingsListEvent> HandleMeetingsEvent(MeetingsEvent meetingsEvent)
@@ -32,7 +32,7 @@ namespace AkkaOnCore.ReadHub
 			_logger.LogInformation($"Received {meetingsEvent}");
 
 			if (meetingsEvent is MeetingsEvent.MeetingStartedEvent meetingStarted)
-				AddStreamHandler<MeetingEvent>($"Meeting-{meetingStarted.MeetingId}", HandleMeetingEvent);
+				AddProcessor<MeetingEvent>($"Meeting-{meetingStarted.MeetingId}", HandleMeetingEvent);
 
 			return _readModel.Integrate(meetingsEvent);
 		}

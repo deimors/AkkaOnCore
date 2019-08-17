@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Akka.Actor;
 using Akka.Configuration;
 using AkkaOnCore.APICommon;
+using AkkaOnCore.QueryAPI.Meeting;
 using AkkaOnCore.QueryAPI.Meetings;
 using AkkaOnCore.ReadModel.Meetings;
 using Microsoft.AspNetCore.Builder;
@@ -47,8 +48,10 @@ namespace AkkaOnCore.QueryAPI
 			services.AddSingleton(_ => ActorSystem.Create("meetingsquery", LoadAkkaConfig("akka.conf")));
 
 			services.AddSingleton<MeetingsListReadModel>();
+			services.AddHostedService<MeetingsListUpdateService>();
 
-			services.AddHostedService<UpdateMeetingsListService>();
+			services.AddSingleton<MeetingViewReadModelCollection>();
+			services.AddHostedService<MeetingViewUpdateService>();
 		}
 
 		public static Config LoadAkkaConfig(string filename)

@@ -4,6 +4,8 @@ namespace AkkaOnCore.Messages
 {
 	public abstract class MeetingEvent
 	{
+		public abstract Guid MeetingId { get; }
+
 		public abstract TResult Match<TResult>(
 			Func<ItemAddedToAgenda, TResult> itemAddedToAgenda
 		);
@@ -14,8 +16,8 @@ namespace AkkaOnCore.Messages
 
 		public class ItemAddedToAgenda : MeetingEvent
 		{
+			public override Guid MeetingId { get; }
 			public string Description { get; }
-			public Guid MeetingId { get; }
 			public Guid AgendaItemId { get; }
 
 			public ItemAddedToAgenda(string description, Guid meetingId, Guid agendaItemId)
