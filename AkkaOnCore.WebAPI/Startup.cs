@@ -38,7 +38,7 @@ namespace AkkaOnCore.WebAPI
 			}
 			else
 			{
-				app.UseExceptionHandler("/Home/Error");
+				app.UseExceptionHandler("/MeetingList/Error");
 				app.UseHsts();
 			}
 
@@ -48,7 +48,7 @@ namespace AkkaOnCore.WebAPI
 			{
 				routes.MapRoute(
 					name: "default",
-					template: "{controller=Home}/{action=Index}/{id?}");
+					template: "{controller=MeetingList}/{action=Index}/{id?}");
 			});
 		}
 	}
