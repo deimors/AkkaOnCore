@@ -5,7 +5,7 @@
 <div id="meeting">
 	<h1>{{model.name}}</h1>
 	<ul>
-		<li v-for="agendaItem in model.agenda">
+		<li v-for="(agendaItem, id) in model.agenda">
 			<h3>{{ agendaItem }}</h3>
 		</li>
 	</ul>
@@ -28,7 +28,7 @@
 			disconnected: false,
 			model: {
 				name: "",
-				agenda: []
+				agenda: {}
 			}
 		},
 		methods: {
