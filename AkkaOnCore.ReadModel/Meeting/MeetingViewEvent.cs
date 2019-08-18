@@ -4,6 +4,8 @@ namespace AkkaOnCore.ReadModel.Meeting
 {
 	public abstract class MeetingViewEvent
 	{
+		public abstract Guid MeetingId { get; }
+
 		public abstract TResult Match<TResult>(
 			Func<AgendaItemAdded, TResult> agendaItemAdded
 		);
@@ -14,11 +16,13 @@ namespace AkkaOnCore.ReadModel.Meeting
 
 		public class AgendaItemAdded : MeetingViewEvent
 		{
-			private readonly string _description;
+			public override Guid MeetingId { get; }
+			public string Description { get; }
 
-			public AgendaItemAdded(string description)
+			public AgendaItemAdded(Guid meetingId, string description)
 			{
-				_description = description;
+				MeetingId = meetingId;
+				Description = description ?? throw new ArgumentNullException(nameof(description));
 			}
 
 			public override TResult Match<TResult>(Func<AgendaItemAdded, TResult> agendaItemAdded)

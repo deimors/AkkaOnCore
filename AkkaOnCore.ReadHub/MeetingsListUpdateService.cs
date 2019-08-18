@@ -23,9 +23,7 @@ namespace AkkaOnCore.ReadHub
 		}
 
 		protected override void Initialize()
-		{
-			AddProcessor<MeetingsEvent>("MeetingsActor", HandleMeetingsEvent);
-		}
+			=> AddProcessor<MeetingsEvent>("MeetingsActor", HandleMeetingsEvent);
 
 		private IEnumerable<MeetingsListEvent> HandleMeetingsEvent(MeetingsEvent meetingsEvent)
 		{

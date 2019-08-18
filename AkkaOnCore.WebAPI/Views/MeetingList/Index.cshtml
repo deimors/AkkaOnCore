@@ -7,7 +7,7 @@
 		</ul>
 		<div v-if="disconnected" style="color: black; background-color: red; font-weight: bold; padding: 5px">Disconnected</div>
 		<div>
-			<input type="text" v-model="newMeetingName" placeholder="Meeting Name" />
+			<input type="text" v-model="newMeetingName" placeholder="Meeting Name" v-on:keyup.enter="startMeeting" />
 
 			<button v-on:click="startMeeting">Start</button>
 		</div>
@@ -38,7 +38,7 @@
 						headers: { 'Accept': '*/*', 'Content-Type': 'application/json' },
 						body: JSON.stringify({ name: this.newMeetingName })
 					}
-				);
+				).then(_ => this.newMeetingName = "");
 			}
 		},
 		created() {

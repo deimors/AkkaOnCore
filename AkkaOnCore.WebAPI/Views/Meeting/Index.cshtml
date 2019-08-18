@@ -9,9 +9,9 @@
 			<h3>{{ agendaItem }}</h3>
 		</li>
 	</ul>
-	
+	<div v-if="disconnected" style="color: black; background-color: red; font-weight: bold; padding: 5px">Disconnected</div>
 	<div>
-		<input type="text" v-model="newAgendaItem" placeholder="Agenda Item" />
+		<input type="text" v-model="newAgendaItem" placeholder="Agenda Item" v-on:keyup.enter="addAgendaItem" />
 
 		<button v-on:click="addAgendaItem">Add</button>
 	</div>
@@ -25,6 +25,7 @@
 		el: '#meeting',
 		data: {
 			newAgendaItem: "",
+			disconnected: false,
 			model: {
 				name: "",
 				agenda: []
@@ -44,11 +45,40 @@
 						headers: { 'Accept': '*/*', 'Content-Type': 'application/json' },
 						body: JSON.stringify({ description: this.newAgendaItem })
 					}
-				);
+				).then(_ => this.newAgendaItem = "");
 			}
 		},
 		created() {
 			this.loadModel();
 		}
 	});
+
+	var connection = new signalR.HubConnectionBuilder().withUrl("/signalr/meetingHub").build();
+
+	connection.on("OnAgendaItemAdded", description => app.model.agenda.push(description));
+
+	function start() {
+		connection
+			.start()
+			.then(() => {
+				console.info("Connected");
+				app.disconnected = false;
+				connection
+					.invoke("Subscribe", "@meetingId")
+					.then(() => console.info("Subscribed"))
+					.catch(err => console.error(err.toString()));
+			})
+			.catch(err => {
+				console.error(err.toString());
+				setTimeout(() => start(), 1000);
+			});
+	}
+
+	connection.onclose(() => {
+		console.info("Disconnected, retrying...");
+		app.disconnected = true;
+		start();
+	});
+
+	start();
 </script>

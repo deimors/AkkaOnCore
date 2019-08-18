@@ -12,7 +12,7 @@ namespace AkkaOnCore.QueryAPI.Meeting
 
 		public void Add(Guid meetingId, string name)
 		{
-			_collection.TryAdd(meetingId, new MeetingViewReadModel(name));
+			_collection.TryAdd(meetingId, new MeetingViewReadModel(meetingId, name));
 		}
 
 		public Option<MeetingViewReadModel> this[Guid meetingId] 

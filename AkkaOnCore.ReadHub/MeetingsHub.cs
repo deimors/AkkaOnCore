@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using System.Threading.Tasks;
 
 namespace AkkaOnCore.ReadHub
 {

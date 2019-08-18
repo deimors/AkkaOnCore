@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Microsoft.Extensions.Hosting;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Hosting;
 
 namespace AkkaOnCore.ReadHub
 {
@@ -24,8 +24,6 @@ namespace AkkaOnCore.ReadHub
 		{
 			try
 			{
-				await _eventStorage.Connect();
-
 				Initialize();
 
 				await ProcessLoop(cancelToken);

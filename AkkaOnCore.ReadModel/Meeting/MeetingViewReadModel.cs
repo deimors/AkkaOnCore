@@ -10,11 +10,13 @@ namespace AkkaOnCore.ReadModel.Meeting
 	{
 		private readonly List<string> _agendaItems = new List<string>();
 
-		public MeetingViewReadModel(string name)
+		public MeetingViewReadModel(Guid id, string name)
 		{
+			Id = id;
 			Name = name ?? throw new ArgumentNullException(nameof(name));
 		}
 
+		public Guid Id { get; }
 		public string Name { get; }
 
 		public IEnumerable<string> Agenda => _agendaItems;
@@ -26,7 +28,7 @@ namespace AkkaOnCore.ReadModel.Meeting
 		{
 			_agendaItems.Add(description);
 
-			return new MeetingViewEvent[] { new MeetingViewEvent.AgendaItemAdded(description) };
+			return new MeetingViewEvent[] { new MeetingViewEvent.AgendaItemAdded(Id, description) };
 		}
 	}
 }
