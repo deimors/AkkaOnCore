@@ -39,9 +39,9 @@ namespace AkkaOnCore.CommandAPI
 			services.AddSingleton<MeetingActorRefFactory>(
 				serviceProvider => 
 					meetingId => serviceProvider
-						.GetService<ActorSystem>()
-						.ActorSelection($"/user/Meetings/{meetingId}")
-						.ResolveOne(TimeSpan.FromSeconds(5))
+						.GetService<MeetingsActorRefFactory>()
+						.Invoke()
+						.Ask<IActorRef>(meetingId)
 			);
 		}
 
