@@ -7,7 +7,7 @@ using AkkaOnCore.ReadModel.Meeting;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
-namespace AkkaOnCore.ReadHub
+namespace AkkaOnCore.ReadHub.MeetingView
 {
 	public class MeetingViewUpdateService : UpdateService<MeetingViewEvent>
 	{

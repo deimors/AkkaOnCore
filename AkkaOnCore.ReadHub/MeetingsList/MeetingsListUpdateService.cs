@@ -1,12 +1,12 @@
-﻿using AkkaOnCore.Messages;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using AkkaOnCore.Messages;
 using AkkaOnCore.ReadModel.Meetings;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
-namespace AkkaOnCore.ReadHub
+namespace AkkaOnCore.ReadHub.MeetingsList
 {
 	public class MeetingsListUpdateService : UpdateService<MeetingsListEvent>
 	{

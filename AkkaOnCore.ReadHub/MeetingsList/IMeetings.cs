@@ -1,7 +1,6 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
-namespace AkkaOnCore.ReadHub
+namespace AkkaOnCore.ReadHub.MeetingsList
 {
 	public interface IMeetings
 	{

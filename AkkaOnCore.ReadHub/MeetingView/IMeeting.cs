@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace AkkaOnCore.ReadHub
+namespace AkkaOnCore.ReadHub.MeetingView
 {
 	public interface IMeeting
 	{

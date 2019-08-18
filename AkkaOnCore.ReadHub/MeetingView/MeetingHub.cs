@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 
-namespace AkkaOnCore.ReadHub
+namespace AkkaOnCore.ReadHub.MeetingView
 {
 	public class MeetingHub : Hub<IMeeting>
 	{
