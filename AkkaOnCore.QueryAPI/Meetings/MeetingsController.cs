@@ -17,6 +17,6 @@ namespace AkkaOnCore.QueryAPI.Meetings
         // GET: api/Meetings
 		[HttpGet]
 		public IActionResult Get()
-			=> Ok(_meetingsList.Meetings);
+			=> Ok(_meetingsList);
 	}
 }

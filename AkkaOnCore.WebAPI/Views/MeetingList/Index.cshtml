@@ -1,17 +1,17 @@
 ﻿@page
-	<div id="meetings">
-		<ul>
-			<li v-for="(meeting, id) in meetings">
-				<a :href="'/meeting/index/' + id"><h3>{{ meeting.name }} ({{ meeting.agendaItemCount }})</h3></a>
-			</li>
-		</ul>
-		<div v-if="disconnected" style="color: black; background-color: red; font-weight: bold; padding: 5px">Disconnected</div>
-		<div>
-			<input type="text" v-model="newMeetingName" placeholder="Meeting Name" v-on:keyup.enter="startMeeting" />
+<div id="meetings">
+	<ul>
+		<li v-for="(meeting, id) in model.meetings">
+			<a :href="'/meeting/index/' + id"><h3>{{ meeting.name }} ({{ meeting.agendaItemCount }})</h3></a>
+		</li>
+	</ul>
+	<div v-if="disconnected" style="color: black; background-color: red; font-weight: bold; padding: 5px">Disconnected</div>
+	<div>
+		<input type="text" v-model="newMeetingName" placeholder="Meeting Name" v-on:keyup.enter="startMeeting" />
 
-			<button v-on:click="startMeeting">Start</button>
-		</div>
+		<button v-on:click="startMeeting">Start</button>
 	</div>
+</div>
 
 <script src="~/lib/vue/vue.js"></script>
 <script src="~/lib/signalr/dist/browser/signalr.js"></script>
@@ -21,14 +21,16 @@
 		el: '#meetings',
 		data: {
 			newMeetingName: "",
-			meetings: {},
-			disconnected: true
+			disconnected: true,
+			model: {
+				meetings: {}
+			}
 		},
 		methods: {
 			loadMeetings() {
 				fetch('/api/meetings')
 					.then(response => response.json())
-					.then(meetings => this.meetings = meetings.reduce((map, meeting) => { map[meeting.id] = meeting; return map;}, {}));
+					.then(model => this.model = model);
 			},
 			startMeeting() {
 				fetch(

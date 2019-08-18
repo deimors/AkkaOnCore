@@ -6,8 +6,9 @@ namespace AkkaOnCore.ReadModel.Meetings
 {
 	public class MeetingsListReadModel
 	{
-		private readonly IDictionary<Guid, MeetingListEntry> _meetings = new Dictionary<Guid, MeetingListEntry>();
-		public IEnumerable<MeetingListEntry> Meetings => _meetings.Values;
+		private readonly Dictionary<Guid, MeetingListEntry> _meetings = new Dictionary<Guid, MeetingListEntry>();
+
+		public IReadOnlyDictionary<Guid, MeetingListEntry> Meetings => _meetings;
 
 		public IEnumerable<MeetingsListEvent> Integrate(MeetingsEvent @event)
 			=> @event.Match(
