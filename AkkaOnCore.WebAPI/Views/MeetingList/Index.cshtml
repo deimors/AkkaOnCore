@@ -5,12 +5,11 @@
 			<a :href="'/meeting/index/' + id"><h3>{{ meeting.name }} ({{ meeting.agendaItemCount }})</h3></a>
 		</li>
 	</ul>
-	<div v-if="disconnected" style="color: black; background-color: red; font-weight: bold; padding: 5px">Disconnected</div>
+	<div v-if="disconnected" class="error-banner">Disconnected</div>
 	<div>
-		<input type="text" v-model="newMeetingName" placeholder="Meeting Name" v-on:keyup.enter="startMeeting" />
-
-		<button v-on:click="startMeeting">Start</button>
+		<input type="text" v-model="newMeetingName" placeholder="Meeting Name" v-on:keyup.enter="startMeeting" v-on:focus="clearError" v-on:keydown="clearError"/><button v-on:click="startMeeting">Start</button>
 	</div>
+	<div v-if="hasError" class="error-banner">{{ errorMessage }}</div>
 </div>
 
 <script src="~/lib/vue/vue.js"></script>
@@ -22,6 +21,7 @@
 		data: {
 			newMeetingName: "",
 			disconnected: true,
+			errorMessage: "",
 			model: {
 				meetings: {}
 			}
@@ -40,8 +40,21 @@
 						headers: { 'Accept': '*/*', 'Content-Type': 'application/json' },
 						body: JSON.stringify({ name: this.newMeetingName })
 					}
-				).then(_ => this.newMeetingName = "");
+				)
+					.then(response => {
+						if (response.ok)
+							this.newMeetingName = "";
+						else
+							response.text().then(error => this.errorMessage = error);
+					})
+					.catch(error => this.errorMessage = error);
+			},
+			clearError() {
+				this.errorMessage = null;
 			}
+		},
+		computed: {
+			hasError: function() { return !!this.errorMessage; }
 		},
 		created() {
 			this.loadMeetings();
@@ -50,8 +63,8 @@
 
 	var connection = new signalR.HubConnectionBuilder().withUrl("/signalr/meetingsHub").build();
 
-	connection.on("OnMeetingAddedToList", (id, name) => Vue.set(app.meetings, id, { name: name, id: id, agendaItemCount: 0 }));
-	connection.on("OnMeetingAgendaCountChanged", (id, newCount) => app.meetings[id].agendaItemCount = newCount);
+	connection.on("OnMeetingAddedToList", (id, name) => Vue.set(app.model.meetings, id, { name: name, id: id, agendaItemCount: 0 }));
+	connection.on("OnMeetingAgendaCountChanged", (id, newCount) => app.model.meetings[id].agendaItemCount = newCount);
 
 	function start() {
 		connection

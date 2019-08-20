@@ -35,3 +35,19 @@ body {
         display: none;
     }
 }
+
+div.validated {
+	padding: 2px
+}
+
+.error-banner {
+	color: black;
+	background-color: red;
+	font-weight: bold;
+	padding: 5px;
+	margin: 5px 0px;
+}
+
+div.validated #errorMessage {
+	visibility: collapse
+}
