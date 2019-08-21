@@ -55,7 +55,7 @@ namespace AkkaOnCore.ReadHub.MeetingView
 
 		private static Task Send(MeetingViewEvent @event, IMeeting meeting)
 			=> @event.Match(
-				agendaItemAdded => meeting.OnAgendaItemAdded(agendaItemAdded.Description)
+				agendaItemAdded => meeting.OnAgendaItemAdded(agendaItemAdded.AgendaItemId, agendaItemAdded.Description)
 			);
 	}
 }

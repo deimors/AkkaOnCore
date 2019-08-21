@@ -25,7 +25,7 @@ namespace AkkaOnCore.ReadModel.Meeting
 		{
 			_agendaItems[agendaItemId] = description;
 
-			return new MeetingViewEvent[] { new MeetingViewEvent.AgendaItemAdded(Id, description) };
+			return new MeetingViewEvent[] { new MeetingViewEvent.AgendaItemAdded(agendaItemId, Id, description) };
 		}
 	}
 }

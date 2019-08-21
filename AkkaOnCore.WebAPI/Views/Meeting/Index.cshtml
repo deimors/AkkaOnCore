@@ -55,7 +55,7 @@
 
 	var connection = new signalR.HubConnectionBuilder().withUrl("/signalr/meetingHub").build();
 
-	connection.on("OnAgendaItemAdded", description => app.model.agenda.push(description));
+	connection.on("OnAgendaItemAdded", (id, description) => Vue.set(app.model.agenda, id, description));
 
 	function start() {
 		connection
