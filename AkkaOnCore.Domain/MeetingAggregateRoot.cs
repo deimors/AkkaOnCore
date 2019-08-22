@@ -24,6 +24,7 @@ namespace AkkaOnCore.Domain
 
 		private Result<IEnumerable<MeetingEvent>, MeetingCommandError> AddToAgenda(MeetingCommand.AddToAgenda command)
 			=> Result.Unit<MeetingCommandError>()
+				.FailIf(string.IsNullOrWhiteSpace(command.Description), () => new MeetingCommandError("Description can't be empty"))
 				.BuildSequence((MeetingEvent)new MeetingEvent.ItemAddedToAgenda(command.Description, _meetingId, Guid.NewGuid()));
 
 		public void ApplyEvent(MeetingEvent @event)

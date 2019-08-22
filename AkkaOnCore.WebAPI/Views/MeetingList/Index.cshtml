@@ -40,14 +40,14 @@
 						headers: { 'Accept': '*/*', 'Content-Type': 'application/json' },
 						body: JSON.stringify({ name: this.newMeetingName })
 					}
-				)
-					.then(response => {
+				).then(response =>
+					{
 						if (response.ok)
 							this.newMeetingName = "";
 						else
 							response.text().then(error => this.errorMessage = error);
-					})
-					.catch(error => this.errorMessage = error);
+					}
+				).catch(error => this.errorMessage = error);
 			},
 			clearError() {
 				this.errorMessage = null;

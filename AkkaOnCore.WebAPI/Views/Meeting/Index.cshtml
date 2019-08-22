@@ -2,20 +2,19 @@
 @{
 	var meetingId = (Guid) ViewBag.MeetingId;
 }
-<div id="meeting">
-	<h1>{{model.name}}</h1>
-	<ul>
-		<li v-for="(agendaItem, id) in model.agenda">
-			<h3>{{ agendaItem }}</h3>
-		</li>
-	</ul>
-	<div v-if="disconnected" style="color: black; background-color: red; font-weight: bold; padding: 5px">Disconnected</div>
-	<div>
-		<input type="text" v-model="newAgendaItem" placeholder="Agenda Item" v-on:keyup.enter="addAgendaItem" />
-
-		<button v-on:click="addAgendaItem">Add</button>
+	<div id="meeting">
+		<h1>{{model.name}}</h1>
+		<ul>
+			<li v-for="(agendaItem, id) in model.agenda">
+				<h3>{{ agendaItem }}</h3>
+			</li>
+		</ul>
+		<div v-if="disconnected" class="error-banner">Disconnected</div>
+		<div>
+			<input type="text" v-model="newAgendaItem" placeholder="Agenda Item" v-on:keyup.enter="addAgendaItem" v-on:focus="clearError" v-on:keydown="clearError" /><button v-on:click="addAgendaItem">Add</button>
+		</div>
+		<div v-if="hasError" class="error-banner">{{ errorMessage }}</div>
 	</div>
-</div>
 
 <script src="~/lib/vue/vue.js"></script>
 <script src="~/lib/signalr/dist/browser/signalr.js"></script>
@@ -26,6 +25,7 @@
 		data: {
 			newAgendaItem: "",
 			disconnected: false,
+			errorMessage: "",
 			model: {
 				name: "",
 				agenda: {}
@@ -45,8 +45,21 @@
 						headers: { 'Accept': '*/*', 'Content-Type': 'application/json' },
 						body: JSON.stringify({ description: this.newAgendaItem })
 					}
-				).then(_ => this.newAgendaItem = "");
+				).then(response =>
+					{
+						if (response.ok)
+							this.newAgendaItem = "";
+						else
+							response.text().then(error => this.errorMessage = error);
+					}
+				).catch(error => this.errorMessage = error);
+			},
+			clearError() {
+				this.errorMessage = null;
 			}
+		},
+		computed: {
+			hasError: function() { return !!this.errorMessage; }
 		},
 		created() {
 			this.loadModel();
